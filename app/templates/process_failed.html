@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Index - process failed</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <h1>White Mountains Tracing Map</h1>
+    <p>Upload the spreadsheet you use for keeping track of your tracing progress and generate a map of trails.</p>
+
+    <h3>Upload spreadsheet</h3>
+    <form method="POST" action="" enctype="multipart/form-data">
+        <p><input type="file" name="file"></p>
+        <p><input type="submit" value="Submit"></p>
+        <p style="color: red;"><b>Something went wrong. Please try uploading a different file and try again.</b></p>
+    </form>
+
+    
+    <img src="{{ url_for('static', filename='img/sample_map.jpg') }}" alt="">
+    <p>Here is the snapshot of what the generated map will look like</p>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>

@@ -5,24 +5,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Index - file error</title>
+    <title>White Mountains Tracing Map</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
     <h1>White Mountains Tracing Map</h1>
-    <p>Upload the spreadsheet you use for keeping track of your tracing progress and generate a map of trails.</p>
+    <p>
+        This application takes the uploaded spreadsheet you use for keeping track of your hiking progess and
+        generates an interactive map colored based on tracing status. You can view the map in this browser window or download it to your device.
+        Learn more about white mountains tracing <a href="http://48x12.com/white-mountains-tracing-rules.shtml" target="_blank">here.</a>
+        If you don't already have it, you can download a spreadsheet from the
+        <a href="http://48x12.com/white-mountains-tracing-rules.shtml" target="_blank">website</a> to keep track of your hiking progress.
+    </p>
 
     <h3>Upload spreadsheet</h3>
-    <form method="POST" action="" enctype="multipart/form-data">
-        <p><input type="file" name="file"></p>
-        <p><input type="submit" value="Submit"></p>
+    <form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data">
+        <p><input type="file" name="file", accept=".xls, .xlsx"></p>
+        <p>
+            <input type="submit" value="Submit & View" name="view">
+            <input type="submit" value="Submit & Download" name="save">
+        </p>
         <p style="color: red;"><b>Submitted file must have .xls or .xlsx extension</b></p>
     </form>
 
     
     <img src="{{ url_for('static', filename='img/sample_map.jpg') }}" alt="">
     <p>Here is the snapshot of what the generated map will look like</p>
+
+    <h2>Notes</h2>
+    <p>
+        <ul>
+            <li>This works with 29th and 30th edition workbooks.</li>
+            <li>The map has alignments for most of the trails in 30th edition. Some trails in the older 29th edition are missing.</li>
+            <li>If you find any trails missing or geometries to be wrong, please let me know <a href="https://theja.github.io/#five" target="_blank">here.</a></li>
+            <li>If your spreadsheet has any sensitive information, I would recommend modifying it before uploading it for security reasons.</li>
+            <li>The spreadsheet should follow the format of the above-mentioned spreadsheet.</li>
+            <li>The code accounts for some common deviations from the format but it might sometimes raise an error.</li>
+            <li>If an error is raised for any reason, adjust the format and try again. If the error persists, let me know <a href="https://theja.github.io/#five" target="_blank">here.</a></li>
+        </ul>
+    </p>
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>

@@ -5,6 +5,7 @@ import json
 from xlrd import open_workbook
 from openpyxl import load_workbook
 import csv
+from branca.element import Template, MacroElement
 
 def draw_map(filename="data/tracing_template.xls", output_map="data/tracing_map.html"):
     excel_file = Path(filename)
@@ -95,9 +96,35 @@ def draw_map(filename="data/tracing_template.xls", output_map="data/tracing_map.
         for value in trails_without_geom:
             print("{0}.    {1}".format(i, value))
             i += 1
-            
+
+    text_box = """
+    {% macro html(this, kwargs) %}
+    <div style="position: absolute; z-index:9999; top: 120px; right: 0; width: 160px; height: 64px; 
+                background-color:rgba(255, 255, 255); border:1px solid grey;
+                border-radius:6px; padding: 1px; font-size:14px; right: 10px;">
+        <b>LEGEND</b>
+        <table>
+            <tr><td style="width: 20px"><hr style="border: 1px solid red; margin: 0"></td> <td = style="padding: 0 0 0 1em; margin: 0">Trails traced</td></tr>
+            <tr><td style="width: 20px"><hr style="border: 1px solid blue; margin: 0"></td> <td = style="padding: 0 0 0 1em; margin: 0">Trails left to trace</td></tr>
+        </table>
+    </div>
+    <div style="position: absolute; z-index:9999; bottom: 0; right: 0; width: 320px; 
+                background-color:rgba(255, 255, 255); border:1px solid grey;
+                border-radius:6px; padding: 10px; font-size:12px; right: 20px; bottom: 20px;">
+        <ul style="margin: 0; padding-left: 1em">
+            <li>Click on the trails for more information about them</li>
+            <li>This map was built by <a href="https://theja.github.io"  target="_blank">Theja Putta</a></li>
+            <li>If any trails are missing, or if you have any other feedback, contact Theja through this <a href="https://theja.github.io/#five" target="_blank">form</a></li>
+        </ul>
+    </div>
+    {% endmacro %}"""
+    macro = MacroElement()
+    macro._template = Template(text_box)
+    m.get_root().add_child(macro)
+
+
     m.save(output_map)
-    return output_map
+    return m
 
 
 

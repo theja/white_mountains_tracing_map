@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, abort
+from flask import Flask, render_template, request, send_file
 from werkzeug.utils import secure_filename
 from wmg_tracing_map import *
 
@@ -16,17 +16,22 @@ def index():
 def upload_file():
     # return "OK this is a post method"
     uploaded_file = request.files['file']
+
     filename = secure_filename(uploaded_file.filename)
     if filename != '' and (os.path.splitext(filename)[1]).lower() in app.config['UPLOAD_EXTENSIONS']:
         filename = filename.lower()
         uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
         try:
-            draw_map(filename=os.path.join(app.config['UPLOAD_PATH'], filename), output_map=os.path.join('templates', 'test_map.html'))
+            map = 'templates/map.html'
+            draw_map(filename=os.path.join(app.config['UPLOAD_PATH'], filename), output_map=map)
+            if 'save' in request.form:
+                return send_file(map, as_attachment=True)
+            elif 'view' in request.form:
+                return render_template('output_map.html')
         except:
             return render_template('process_failed.html')
     else:
         return render_template('file_error.html')
-    return render_template('test_map.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
